@@ -12,6 +12,7 @@ export class AppComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.apiService.getUser('johnpapa').subscribe(console.log);
+    this.apiService.getUser('sushilpandeyy').subscribe(console.log);
+    this.apiService.getRepo('sushilpandeyy').subscribe(console.log)
   }
 }
