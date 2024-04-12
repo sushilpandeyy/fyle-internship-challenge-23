@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from './services/api.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  constructor(
-    private apiService: ApiService
-  ) {}
+export class AppComponent {
+  searchInput: string = '';
 
-  ngOnInit() {
-    this.apiService.getUser('sushilpandeyy').subscribe(console.log);
-    this.apiService.getRepo('sushilpandeyy').subscribe(console.log)
+  handleInputChange() {
+    console.log(this.searchInput);
+  }
+
+  handleSearch() {
+    console.log('Search button clicked!');
   }
 }
