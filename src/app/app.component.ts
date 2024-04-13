@@ -8,7 +8,7 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit {
   data: any = {};
-  repodata: any = {};
+  repodata: any = [];
   loading: boolean = true;
   repoloading: boolean = true;
   error: string | null = null;
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     this.apiService.getReposForUser(this.searchInput).then(
       (response: any) => {
         this.repodata = response;
-        console.log(this.repodata);
+        this.repoloading = false;
       },
       (error: any) => {
         console.error('Error fetching data:', error);

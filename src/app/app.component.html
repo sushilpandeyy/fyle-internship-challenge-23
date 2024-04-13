@@ -11,20 +11,23 @@
   <div class="flex">
     <ng-container *ngIf="loading; else showData">
       <div class="p-4">
-        <div class="h-32 w-32 bg-gray-300 rounded-full flex items-center justify-center animate-pulse">
-        </div>
+        <div class="h-32 w-32 bg-gray-300 rounded-full flex items-center justify-center animate-pulse"></div>
       </div>
       <div class="p-4">
         <h1 class="text-3xl font-bold mb-4">
-          <span class="bg-gray-300 h-8 w-32 block animate-pulse mb-2"></span>
-          <span class="bg-gray-300 h-8 w-48 block animate-pulse"></span>
+            <!-- Reduce the width of the spans in mobile views -->
+            <span class="bg-gray-300 h-8 w-24 block animate-pulse mb-2 sm:w-24 md:w-48"></span>
+            <span class="bg-gray-300 h-8 w-32 block animate-pulse sm:w-32 md:w-64"></span>
         </h1>
         <p class="text-lg text-gray-700 mb-2">
-          <span class="bg-gray-300 h-6 w-64 block animate-pulse mb-2"></span>
-          <span class="bg-gray-300 h-6 w-56 block animate-pulse"></span>
+            <!-- Reduce the width of the spans in mobile views -->
+            <span class="bg-gray-300 h-6 w-48 block animate-pulse mb-2 sm:w-48 md:w-56"></span>
+            <span class="bg-gray-300 h-6 w-32 block animate-pulse sm:w-32 md:w-48"></span>
         </p>
-        </div>      
-    </ng-container>
+    </div>                   
+    </ng-container>   
+    
+    
     <ng-template #showData>
       <div class="p-4 flex flex-col md:flex-row">
         <div class="h-32 w-32 bg-gray-300 rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-4">
@@ -61,6 +64,49 @@
         </div>
       </div>
     </ng-template>    
-  </div>
+  </div> 
+  <ng-container *ngIf="repoloading; else showrepo">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- First Card -->
+      <div>
+        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-blue-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
+          <!-- Header Section -->
+          <div class="p-4">
+            <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          
+          <!-- Button Section -->
+          <div class="flex flex-wrap">
+            <div class="mb-4">
+              <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Second Card -->
+      <div>
+        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-green-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
+          <!-- Header Section -->
+          <div class="p-4">
+            <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          
+          <!-- Button Section -->
+          <div class="flex flex-wrap">
+            <div class="mb-4">
+              <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </ng-container>
+  <ng-template #showrepo>
+  <app-card [data]="repodata"></app-card>
+</ng-template>
 </div>
 

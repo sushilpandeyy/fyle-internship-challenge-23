@@ -31,7 +31,7 @@ export class ApiService {
 }
 
 
-  async getReposForUser(username: string, page: number = 1, perPage: number = 10) {
+  async getReposForUser(username: string, page: number = 1, perPage: number = 100) {
     try {
       const response = await this.octokit.request<any>('GET /users/{username}/repos', {
         username: username,
