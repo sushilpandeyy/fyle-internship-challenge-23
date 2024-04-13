@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Octokit } from "octokit";
-
-interface IssueInfo {
-  title: string;
-  authorID: number;
-}
+import { Octokit } from 'octokit';
+import { Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,42 +11,36 @@ export class ApiService {
   private octokit: Octokit;
 
   constructor(private httpClient: HttpClient) {
-    this.octokit = new Octokit({ 
-      auth: ""
+    this.octokit = new Octokit({
+      auth: ''
     });
   }
 
-  async getUser(username: string){
-    try {
-        const response = await this.octokit.request<any>(`GET /users/${username}`);
-        const userData = response.data;
-            return userData;
-    } catch (error:any) {
-        console.error(`Error fetching user data for ${username}: ${error.message}`);
-        throw error;
-    }
-}
-
-
-async getReposForUser(username: string, page: number = 1, perPage: number = 10) {
-  try {
-      const response = await this.octokit.request<any>('GET /users/{username}/repos', {
-          username: username,
-          page: page,
-          per_page: perPage
-      });
-      const data = response.data;
-        const totalCountHeader = response.headers['x-total-count'];
-        console.log('Total Count Header:', totalCountHeader); // Log the total count header
-        const totalCount = Number(totalCountHeader); // Convert the header value to a number
-        const totalPages = Math.ceil(totalCount / perPage);
-        return data;
-  } catch (error: any) {
-      console.log(`Error fetching repositories: ${error.message}`);
-      throw error;
+  getUser(username: string): Observable<any> {
+    const url = `GET /users/${username}`;
+    return new Observable(observer => {
+      this.octokit.request<any>(url)
+        .then(response => {
+          observer.next(response.data);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    }).pipe(
+      shareReplay(1)
+    );
   }
-}
 
-
-  
+  getReposForUser(username: string, page: number = 1, perPage: number = 10): Observable<any> {
+    const url = `GET /users/${username}/repos?page=${page}&per_page=${perPage}`;
+    return new Observable(observer => {
+      this.octokit.request<any>(url)
+        .then(response => {
+          observer.next(response.data);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    }).pipe(
+      shareReplay(1)
+    );
+  }
 }

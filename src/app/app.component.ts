@@ -22,34 +22,37 @@ export class AppComponent implements OnInit {
     
   }
   loadrepo(): void {
-    this.apiService.getReposForUser(this.searchInput, this.currentPage, this.perpage).then(
-      (response: any) => {
+    this.apiService.getReposForUser(this.searchInput, this.currentPage, this.perpage).subscribe({
+      next: (response: any) => {
         this.repodata = response;
         this.repoloading = false;
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching data:', error);
         this.error = 'Error fetching data. Please try again later.';
         this.loading = false;
       }
-    );
+    });
   }
+  
+  
 
   loadData(): void {
-    this.apiService.getUser(this.searchInput).then(
-      (response: any) => {
+    this.apiService.getUser(this.searchInput).subscribe({
+      next: (response: any) => {
         this.data = response;
         this.nrepo = this.data.public_repos;
-        this.totalPages=this.nrepo/this.perpage;
+        this.totalPages = Math.ceil(this.nrepo / this.perpage);
         this.loading = false;
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching data:', error);
         this.error = 'Error fetching data. Please try again later.';
         this.loading = false;
       }
-    );
+    });
   }
+  
 
   handleSearch(): void {
     this.loadData();
