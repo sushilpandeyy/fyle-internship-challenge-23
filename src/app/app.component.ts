@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from './services/api.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit {
   data: any = {};
+  perpage: number = 10;
+  nrepo: number = 0;
   repodata: any = [];
   loading: boolean = true;
   repoloading: boolean = true;
@@ -20,7 +22,7 @@ export class AppComponent implements OnInit {
     
   }
   loadrepo(): void {
-    this.apiService.getReposForUser(this.searchInput).then(
+    this.apiService.getReposForUser(this.searchInput, this.currentPage, this.perpage).then(
       (response: any) => {
         this.repodata = response;
         this.repoloading = false;
@@ -37,7 +39,8 @@ export class AppComponent implements OnInit {
     this.apiService.getUser(this.searchInput).then(
       (response: any) => {
         this.data = response;
-        console.log(this.data);
+        this.nrepo = this.data.public_repos;
+        this.totalPages=this.nrepo/this.perpage;
         this.loading = false;
       },
       (error: any) => {
@@ -51,43 +54,69 @@ export class AppComponent implements OnInit {
   handleSearch(): void {
     this.loadData();
     this.loadrepo();
+    this.generatePagesArray(this.totalPages);
   }
 
   //PAGINATION
+  totalPages = 10;
+  currentPage = 1;
 
-  itemsPerPageOptions: number[] = [2, 4, 6, 8];
-  itemsPerPage: number = 2; 
-  currentPage: number = 1; 
-  totalPages: number = 1; 
-  paginatedData: any[] = []; 
+  @Output() pageChanged = new EventEmitter<number>();
 
-  paginateData() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedData = this.data.slice(startIndex, endIndex);
-    this.totalPages = Math.ceil(this.data.length / this.itemsPerPage);
-  }
-
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.paginateData();
+  generatePagesArray(totalPages: number): number[] {
+    const pagesArray = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pagesArray.push(i);
     }
+    console.log('pagesArray:', pagesArray);
+    return pagesArray;
   }
 
-  previousPage() {
+  prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.paginateData();
+      this.emitPageChange();
+      this.loadrepo();
     }
   }
 
-  changeItemsPerPage(event: any) {
-    const value = event?.target?.value;
-    if (value !== undefined) {
-        this.itemsPerPage = parseInt(value, 10); 
-        this.currentPage = 1;
-        this.paginateData();
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.emitPageChange();
+      this.loadrepo();
     }
+  }
+
+  goToPage(page: number): void {
+    if (this.currentPage !== page) {
+      this.currentPage = page;
+      this.emitPageChange();
+      this.loadrepo();
+    }
+  }
+
+  private emitPageChange(): void {
+    this.pageChanged.emit(this.currentPage);
+  }
+  updateTotalPages(): void {
+    if (this.perpage <= 0) {
+        console.warn('Invalid perpage value:', this.perpage);
+        return;
+    }
+
+    this.totalPages = Math.ceil(this.nrepo / this.perpage);
+    if (this.totalPages < 1) {
+        this.totalPages = 1;
+    }
+    console.log('Updated totalPages:', this.totalPages);
 }
+  onChange(value: number) {
+    this.perpage = value;
+    this.updateTotalPages();
+    this.loadrepo();
 }
+
+}
+  
+

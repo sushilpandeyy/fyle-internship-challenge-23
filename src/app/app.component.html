@@ -1,7 +1,7 @@
   <nav class="bg-gray-900 py-4 px-6 flex flex-col lg:flex-row justify-between items-center">
     <div class="text-white text-lg mb-2 lg:mb-0">Github Rocks</div>
     <div class="relative">
-      <input type="text" [(ngModel)]="searchInput" (keydown.enter)="handleSearch()" placeholder="Enter the Github Username" class="bg-gray-800 text-white px-3 py-2 pl-10 rounded focus:outline-none focus:bg-gray-700 focus:text-gray-200">
+      <input type="text" [(ngModel)]="searchInput" (keydown.enter)="handleSearch()" placeholder="Github Username" class="bg-gray-800 text-white px-3 py-2 pl-10 rounded focus:outline-none focus:bg-gray-700 focus:text-gray-200">
       <svg (click)="handleSearch()" class="cursor-pointer hidden lg:block absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
         <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
       </svg>
@@ -37,6 +37,7 @@
           <h1 class="text-3xl font-bold mb-4" *ngIf="!loading">{{data?.name}}</h1>
           <p class="text-lg text-gray-700 mb-2">{{data?.bio}}</p>
           <div class="flex items-center mb-2">
+            <div *ngIf="data?.location">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="30" height="30" viewBox="0 0 256 256" xml:space="preserve">
               <defs>
               </defs>
@@ -45,6 +46,7 @@
               </g>
               </svg>
             <p class="text-lg text-gray-700">{{data?.location}}</p>
+          </div>
           </div>
           <div class="flex space-x-4">
             <a href="https://twitter.com/{{data?.twitter_username }}" class="text-black hover:text-blue-700">
@@ -125,13 +127,26 @@
   </ng-container>
   <ng-template #showrepo>
   <app-card [data]="repodata"></app-card>
-  <div class="flex justify-center mt-4" *ngIf="itemsPerPageOptions">
-    <button (click)="previousPage()" [disabled]="currentPage === 1" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">Previous</button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">Next</button>
-    <select *ngIf="itemsPerPageOptions" [(ngModel)]="itemsPerPage" class="px-4 py-2 bg-gray-600 text-white rounded-md">
-      <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
-    </select>
-  </div>
+  <div class="flex justify-center items-center mt-4">
+    <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 rounded-md mr-2 {{ currentPage === 1 ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-gray-600 text-white' }}">Previous</button>
+    <ng-container *ngFor="let page of generatePagesArray(totalPages)">
+      <button (click)="goToPage(page)" [class.active]="currentPage === page" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">
+          {{ page }}
+      </button>
+  </ng-container>     
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 rounded-md mr-2 {{ currentPage === totalPages ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-gray-600 text-white' }}">Next</button>
+    <div class="relative inline-block">
+      <select class="px-4 py-2 bg-gray-600 text-white rounded-md appearance-none" [(ngModel)]="perpage" (ngModelChange)="onChange($event)">
+        <option value=10>10</option>
+        <option value=20>20</option>
+        <option value=50>50</option>
+        <option value=100>100</option>
+      </select>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l3-3 3 3m0 6l-3 3-3-3" /></svg>
+      </div>
+    </div>    
+</div>  
   </ng-template>
 </div>
 
