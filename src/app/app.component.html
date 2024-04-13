@@ -67,16 +67,12 @@
   </div> 
   <ng-container *ngIf="repoloading; else showrepo">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- First Card -->
       <div>
         <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-blue-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
-          <!-- Header Section -->
           <div class="p-4">
             <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
             <div class="h-4 bg-gray-200 rounded w-1/2"></div>
           </div>
-          
-          <!-- Button Section -->
           <div class="flex flex-wrap">
             <div class="mb-4">
               <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
@@ -84,17 +80,12 @@
           </div>
         </div>
       </div>
-    
-      <!-- Second Card -->
       <div>
-        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-green-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
-          <!-- Header Section -->
+        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-blue-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
           <div class="p-4">
             <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
             <div class="h-4 bg-gray-200 rounded w-1/2"></div>
           </div>
-          
-          <!-- Button Section -->
           <div class="flex flex-wrap">
             <div class="mb-4">
               <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
@@ -102,11 +93,45 @@
           </div>
         </div>
       </div>
+      <div>
+        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-blue-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
+          <div class="p-4">
+            <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="mb-4">
+              <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div [ngClass]="loading ? 'bg-gray-300 animate-pulse' : 'bg-blue-300'" class="border rounded-lg overflow-hidden shadow-md transition-colors duration-500">
+          <div class="p-4">
+            <div class="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="mb-4">
+              <div class="h-6 w-16 bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+                        
     </div>
     
   </ng-container>
   <ng-template #showrepo>
   <app-card [data]="repodata"></app-card>
-</ng-template>
+  <div class="flex justify-center mt-4" *ngIf="itemsPerPageOptions">
+    <button (click)="previousPage()" [disabled]="currentPage === 1" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">Previous</button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">Next</button>
+    <select *ngIf="itemsPerPageOptions" [(ngModel)]="itemsPerPage" class="px-4 py-2 bg-gray-600 text-white rounded-md">
+      <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+    </select>
+  </div>
+  </ng-template>
 </div>
 

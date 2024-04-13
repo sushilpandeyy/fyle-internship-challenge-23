@@ -31,19 +31,25 @@ export class ApiService {
 }
 
 
-  async getReposForUser(username: string, page: number = 1, perPage: number = 100) {
-    try {
+async getReposForUser(username: string, page: number = 1, perPage: number = 10) {
+  try {
       const response = await this.octokit.request<any>('GET /users/{username}/repos', {
-        username: username,
-        page: page,
-        per_page: perPage
+          username: username,
+          page: page,
+          per_page: perPage
       });
       const data = response.data;
-
-      return data;
-    } catch (error :any) {
+        const totalCountHeader = response.headers['x-total-count'];
+        console.log('Total Count Header:', totalCountHeader); // Log the total count header
+        const totalCount = Number(totalCountHeader); // Convert the header value to a number
+        const totalPages = Math.ceil(totalCount / perPage);
+        return data;
+  } catch (error: any) {
       console.log(`Error fetching repositories: ${error.message}`);
       throw error;
-    }
   }
+}
+
+
+  
 }
