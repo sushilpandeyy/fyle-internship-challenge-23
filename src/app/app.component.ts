@@ -61,13 +61,14 @@ export class AppComponent implements OnInit {
 }
   handleSearch(): void {
     if (this.searchInput) {
-      this.resetState();
       this.loadData();
       this.loadrepo();
       this.generatePagesArray(this.totalPages);
       this.wholeloading = false;
+      
     }
     else{
+      this.resetState();
       this.searched=true;
     } 
   }

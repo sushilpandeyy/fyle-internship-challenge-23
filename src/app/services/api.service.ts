@@ -3,18 +3,17 @@ import { Injectable } from '@angular/core';
 import { Octokit } from 'octokit';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
-import { config } from 'dotenv';
-
-config();
+import tokenObject from '../../../token';
 
 @Injectable({
+
   providedIn: 'root'
 })
 export class ApiService {
   private octokit: Octokit;
   constructor(private httpClient: HttpClient) {
     this.octokit = new Octokit({
-      auth: process.env["GITHUB_TOKEN"]
+      auth: tokenObject
     });
   }
 
