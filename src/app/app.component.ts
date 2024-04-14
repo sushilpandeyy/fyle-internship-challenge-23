@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   repoloading: boolean = true;
   error: string | null = null;
   searchInput: string = '';
+  wholeloading: boolean = true;
 
 
   constructor(private apiService: ApiService) {}
@@ -34,9 +35,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  
-  
-
   loadData(): void {
     this.apiService.getUser(this.searchInput).subscribe({
       next: (response: any) => {
@@ -52,12 +50,11 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  
-
   handleSearch(): void {
     this.loadData();
     this.loadrepo();
     this.generatePagesArray(this.totalPages);
+    this.wholeloading=false;
   }
 
   //PAGINATION
@@ -74,7 +71,6 @@ export class AppComponent implements OnInit {
     console.log('pagesArray:', pagesArray);
     return pagesArray;
   }
-
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -82,7 +78,6 @@ export class AppComponent implements OnInit {
       this.loadrepo();
     }
   }
-
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -90,7 +85,6 @@ export class AppComponent implements OnInit {
       this.loadrepo();
     }
   }
-
   goToPage(page: number): void {
     if (this.currentPage !== page) {
       this.currentPage = page;
@@ -98,7 +92,6 @@ export class AppComponent implements OnInit {
       this.loadrepo();
     }
   }
-
   private emitPageChange(): void {
     this.pageChanged.emit(this.currentPage);
   }
@@ -107,7 +100,6 @@ export class AppComponent implements OnInit {
         console.warn('Invalid perpage value:', this.perpage);
         return;
     }
-
     this.totalPages = Math.ceil(this.nrepo / this.perpage);
     if (this.totalPages < 1) {
         this.totalPages = 1;

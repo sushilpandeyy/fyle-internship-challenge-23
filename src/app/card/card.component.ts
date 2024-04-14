@@ -9,6 +9,5 @@ export class CardComponent implements OnInit {
   @Input() data: any;
 
   ngOnInit(): void {
-    console.log(this.data);
   }
 }
