@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   error: string | null = null;
   searchInput: string = '';
   wholeloading: boolean = true;
-
+  user404: boolean = false;
+  searched: boolean = true;
 
   constructor(private apiService: ApiService) {}
   ngOnInit(): void {
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
     this.apiService.getReposForUser(this.searchInput, this.currentPage, this.perpage).subscribe({
       next: (response: any) => {
         this.repodata = response;
+        console.log(this.repodata)
         this.repoloading = false;
       },
       error: (error: any) => {
@@ -36,20 +38,26 @@ export class AppComponent implements OnInit {
     });
   }
   loadData(): void {
+    this.searched=false;
     this.apiService.getUser(this.searchInput).subscribe({
-      next: (response: any) => {
-        this.data = response;
-        this.nrepo = this.data.public_repos;
-        this.totalPages = Math.ceil(this.nrepo / this.perpage);
-        this.loading = false;
-      },
-      error: (error: any) => {
-        console.error('Error fetching data:', error);
-        this.error = 'Error fetching data. Please try again later.';
-        this.loading = false;
-      }
+        next: (response: any) => {
+            this.data = response;
+            this.nrepo = this.data.public_repos;
+            this.totalPages = Math.ceil(this.nrepo / this.perpage);
+            this.loading = false;
+            this.user404 = false;
+            
+        },
+        error: (error: any) => {
+            console.error('Error fetching data:', error);
+            if (error.status === 404) {
+                this.user404 = true; 
+            }
+            this.error = 'Error fetching data. Please try again later.';
+            this.loading = false;
+        }
     });
-  }
+}
   handleSearch(): void {
     this.loadData();
     this.loadrepo();
@@ -68,7 +76,6 @@ export class AppComponent implements OnInit {
     for (let i = 1; i <= totalPages; i++) {
       pagesArray.push(i);
     }
-    console.log('pagesArray:', pagesArray);
     return pagesArray;
   }
   prevPage(): void {
@@ -104,7 +111,6 @@ export class AppComponent implements OnInit {
     if (this.totalPages < 1) {
         this.totalPages = 1;
     }
-    console.log('Updated totalPages:', this.totalPages);
 }
   onChange(value: number) {
     this.perpage = value;

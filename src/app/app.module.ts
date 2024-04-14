@@ -7,6 +7,8 @@ import { CardComponent } from './card/card.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReposkeltonComponent } from './reposkelton/reposkelton.component';
 import { ProfileskeltonComponent } from './profileskelton/profileskelton.component';
+import { UserNotFoundComponent } from './user-not-found/user-not-found.component';
+import { DefaultComponent } from './default/default.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { ProfileskeltonComponent } from './profileskelton/profileskelton.compone
     ProfileComponent,
     ReposkeltonComponent,
     ProfileskeltonComponent,
+    UserNotFoundComponent,
+    DefaultComponent,
   ],
   imports: [
     BrowserModule,
