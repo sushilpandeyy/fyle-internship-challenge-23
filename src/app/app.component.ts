@@ -6,6 +6,7 @@ import { ApiService } from './services/api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
   data: any = {};
   perpage: number = 10;
@@ -59,11 +60,32 @@ export class AppComponent implements OnInit {
     });
 }
   handleSearch(): void {
-    this.loadData();
-    this.loadrepo();
-    this.generatePagesArray(this.totalPages);
-    this.wholeloading=false;
+    if (this.searchInput) {
+      this.resetState();
+      this.loadData();
+      this.loadrepo();
+      this.generatePagesArray(this.totalPages);
+      this.wholeloading = false;
+    }
+    else{
+      this.searched=true;
+    } 
   }
+
+  resetState(): void {
+    this.data = {};
+    this.perpage = 10;
+    this.nrepo = 0;
+    this.repodata = [];
+    this.loading = true;
+    this.repoloading = true;
+    this.error = null;
+    this.searchInput = '';
+    this.wholeloading = true;
+    this.user404 = false;
+    this.searched = true;
+    this.currentPage = 1;
+  }  
 
   //PAGINATION
   totalPages = 10;
