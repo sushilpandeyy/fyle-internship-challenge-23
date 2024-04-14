@@ -1,16 +1,45 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Octokit } from 'octokit';
+import { Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
+import tokenObject from './token';
 
-import { ApiService } from './api.service';
+@Injectable({
+    providedIn: 'root'
+})
+export class ApiService {
+    private octokit: Octokit;
 
-describe('ApiService', () => {
-  let service: ApiService;
+    constructor(private httpClient: HttpClient) {
+        this.octokit = new Octokit({ auth: tokenObject });
+    }
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiService);
-  });
+    getUser(username: string): Observable<any> {
+        const url = `GET /users/${username}`;
+        return new Observable(observer => {
+            this.octokit.request(url)
+                .then(response => {
+                    observer.next(response.data);
+                    observer.complete();
+                })
+                .catch(error => observer.error(error));
+        }).pipe(
+            shareReplay(1)
+        );
+    }
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+    getReposForUser(username: string, page: number = 1, perPage: number = 10): Observable<any> {
+        const url = `GET /users/${username}/repos?page=${page}&per_page=${perPage}`;
+        return new Observable(observer => {
+            this.octokit.request(url)
+                .then(response => {
+                    observer.next(response.data);
+                    observer.complete();
+                })
+                .catch(error => observer.error(error));
+        }).pipe(
+            shareReplay(1)
+        );
+    }
+}
