@@ -35,15 +35,15 @@
       
       <ng-template #showrepo>
         <app-card [data]="repodata" />
-        <div class="flex justify-center items-center mt-4">
+        <div class="flex flex-wrap justify-center items-center mt-4">
           <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 rounded-md mr-2 {{ currentPage === 1 ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-gray-600 text-white' }}">Previous</button>
           <ng-container *ngFor="let page of generatePagesArray(totalPages)">
-            <button (click)="goToPage(page)" [class.active]="currentPage === page" class="px-4 py-2 bg-gray-600 text-white rounded-md mr-2">
+            <button (click)="goToPage(page)" [class.active]="currentPage === page" class="px-4 py-2 bg-gray-600 text-white rounded-md mx-1 my-1 sm:mr-2">
               {{ page }}
             </button>
           </ng-container>
           <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 rounded-md mr-2 {{ currentPage === totalPages ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-gray-600 text-white' }}">Next</button>
-          <div class="relative inline-block">
+          <div class="relative inline-block mt-2 sm:mt-0">
             <select class="px-4 py-2 bg-gray-600 text-white rounded-md appearance-none" [(ngModel)]="perpage" (ngModelChange)="onChange($event)">
               <option value="10">10</option>
               <option value="20">20</option>
@@ -51,10 +51,13 @@
               <option value="100">100</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
-              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l3-3 3 3m0 6l-3 3-3-3" /></svg>
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" />
+              </svg>
             </div>
           </div>
         </div>
+        
       </ng-template>
     </div>
   </ng-container>
