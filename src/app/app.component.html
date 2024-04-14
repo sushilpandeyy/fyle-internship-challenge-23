@@ -42,7 +42,7 @@
         <div class="flex flex-wrap justify-center items-center mt-4">
           <button (click)="prevPage()" [disabled]="currentPage === 1" class="px-4 py-2 rounded-md mr-2 {{ currentPage === 1 ? 'bg-gray-400 text-gray-600 cursor-not-allowed' : 'bg-gray-600 text-white' }}">Previous</button>
           <ng-container *ngFor="let page of generatePagesArray(totalPages)">
-            <button (click)="goToPage(page)" [class.active]="currentPage === page" class="px-4 py-2 bg-gray-600 text-white rounded-md mx-1 my-1 sm:mr-2">
+            <button (click)="goToPage(page)" [class.active]="currentPage === page" class="px-4 py-2 rounded-md mx-1 my-1 sm:mr-2 {{ currentPage !== page ? 'bg-gray-600 text-white' : 'bg-blue-600 text-white' }}">
               {{ page }}
             </button>
           </ng-container>
@@ -61,6 +61,7 @@
             </div>
           </div>
         </div>
+        
         
       </ng-template>
     </div>

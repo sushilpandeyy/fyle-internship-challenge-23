@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { ApiService } from './services/api.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   user404: boolean = false;
   searched: boolean = true;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private renderer: Renderer2, private apiService: ApiService) {}
   ngOnInit(): void {
     
   }
@@ -102,6 +102,7 @@ export class AppComponent implements OnInit {
     return pagesArray;
   }
   prevPage(): void {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     if (this.currentPage > 1) {
       this.currentPage--;
       this.emitPageChange();
@@ -109,6 +110,7 @@ export class AppComponent implements OnInit {
     }
   }
   nextPage(): void {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.emitPageChange();
@@ -116,6 +118,7 @@ export class AppComponent implements OnInit {
     }
   }
   goToPage(page: number): void {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     if (this.currentPage !== page) {
       this.currentPage = page;
       this.emitPageChange();
@@ -126,6 +129,7 @@ export class AppComponent implements OnInit {
     this.pageChanged.emit(this.currentPage);
   }
   updateTotalPages(): void {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     if (this.perpage <= 0) {
         console.warn('Invalid perpage value:', this.perpage);
         return;
@@ -136,6 +140,7 @@ export class AppComponent implements OnInit {
     }
 }
   onChange(value: number) {
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
     this.perpage = value;
     this.updateTotalPages();
     this.loadrepo();
