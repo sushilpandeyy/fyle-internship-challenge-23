@@ -1,11 +1,15 @@
 <nav class="bg-gray-900 py-4 px-6 flex flex-col lg:flex-row justify-between items-center">
   <div class="text-white text-lg mb-2 lg:mb-0">Github Rocks</div>
   <div class="relative">
-    <input type="text" [(ngModel)]="searchInput" (keydown.enter)="handleSearch()" placeholder="Github Username" class="bg-gray-800 text-white px-3 py-2 pl-10 rounded focus:outline-none focus:bg-gray-700 focus:text-gray-200">
-    <svg (click)="handleSearch()" class="cursor-pointer hidden lg:block absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-      <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+    <input type="text" [(ngModel)]="searchInput" (keydown.enter)="handleSearch()" placeholder="Github Username" class="bg-gray-800 text-white px-3 py-2 rounded focus:outline-none focus:bg-gray-700 focus:text-gray-200 pr-10">
+    <svg (click)="handleSearch()" class="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2 text-white h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+        <g fill="#fff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+            <g transform="scale(5.12,5.12)">
+                <path d="M21,3c-9.37891,0-17,7.62109-17,17c0,9.37891,7.62109,17,17,17c3.71094,0,7.14063,-1.19531,9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656,4.09375,-6.83984,4.09375,-11.0625c0,-9.37891,-7.62109,-17,-17,-17zM21,5c8.29688,0,15,6.70313,15,15c0,8.29688,-6.70312,15,-15,15c-8.29687,0,-15,-6.70312,-15,-15c0,-8.29687,6.70313,-15,15,-15z"></path>
+            </g>
+        </g>
     </svg>
-  </div>
+</div>
 </nav>
 
 <ng-container *ngIf="searched;">
