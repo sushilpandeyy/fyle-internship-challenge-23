@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Octokit } from 'octokit';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
-import tokenObject from '../../../token';
+import tokenObject from './token';
 
 @Injectable({
 
