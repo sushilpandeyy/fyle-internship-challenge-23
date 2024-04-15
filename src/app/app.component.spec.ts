@@ -101,29 +101,24 @@ describe('AppComponent', () => {
   });
 
   it('should update totalPages when perpage changes', () => {
-    component.nrepo = 25; // 25 repositories
-    component.perpage = 10; // 10 per page
+    component.nrepo = 25; 
+    component.perpage = 10;
     
     component.updateTotalPages();
     
-    expect(component.totalPages).toBe(3); // 3 pages (25 / 10 = 2.5, rounded up)
+    expect(component.totalPages).toBe(3);
   });
 
 
 
   it('should handle navigation correctly (previous, next, goToPage)', () => {
-    // Test prevPage method
     component.currentPage = 2;
     component.prevPage();
     expect(component.currentPage).toBe(1);
-
-    // Test nextPage method
     component.currentPage = 1;
     component.totalPages = 2;
     component.nextPage();
     expect(component.currentPage).toBe(2);
-
-    // Test goToPage method
     component.currentPage = 1;
     component.goToPage(3);
     expect(component.currentPage).toBe(3);
